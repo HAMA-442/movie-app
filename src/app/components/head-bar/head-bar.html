@@ -1,0 +1,20 @@
+<header class="navbar">
+  <div class="nav-container">
+    <a routerLink="/" class="brand">
+      <div class="brand-icon">
+        <fa-icon [icon]="faFilm"></fa-icon>
+      </div>
+      <h1 class="brand-text">
+        <span class="brand-main">Movie</span><span class="brand-accent">List</span>
+      </h1>
+    </a>
+
+    <a routerLink="/wish-list" class="wish-btn" routerLinkActive="active">
+      <fa-icon [icon]="faHeart" class="heart-icon"></fa-icon>
+      <span class="wish-text">Wish list</span>
+      <span class="badge" *ngIf="movieService.wishList().length > 0">
+        {{ movieService.wishList().length }}
+      </span>
+    </a>
+  </div>
+</header>

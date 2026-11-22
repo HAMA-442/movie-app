@@ -1,0 +1,348 @@
+.modal-header {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(11, 15, 25, 0.95);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.modal-title, .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dice-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d97706 100%);
+  color: #0b0f19;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.modal-title h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.modal-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.filter-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-toggle-btn:hover,
+.filter-toggle-btn.active {
+  color: var(--accent-gold-light);
+  border-color: var(--border-focus);
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--text-main);
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.filters-panel {
+  padding: 12px 20px;
+  background: #0d1525;
+  border-bottom: 1px solid var(--border-subtle);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter-group label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.filter-group select {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+
+.modal-body {
+  padding: 18px 20px;
+}
+
+.loading-state, .error-state {
+  text-align: center;
+  padding: 35px 20px;
+}
+
+.rolling-dice-box {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: rgba(245, 158, 11, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  border: 1px solid var(--border-focus);
+  animation: pulseGlow 1.5s infinite;
+}
+
+.rolling-dice {
+  font-size: 28px;
+  color: var(--accent-gold);
+  animation: spinDice 1.2s infinite ease-in-out;
+}
+
+.loading-state h4 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.loading-state p, .error-text {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.error-text {
+  color: #fca5a5;
+}
+
+.recommendation-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+}
+
+.recommendation-card.hidden {
+  display: none;
+}
+
+.card-backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(14px) brightness(0.25);
+  transform: scale(1.08);
+}
+
+.backdrop-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(17, 26, 46, 0.95) 0%, rgba(17, 26, 46, 0.85) 100%);
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 20px;
+  padding: 18px;
+}
+
+.card-poster {
+  position: relative;
+  width: 160px;
+  flex-shrink: 0;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.card-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-rating {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(11, 15, 25, 0.85);
+  color: var(--accent-gold);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.movie-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.card-title:hover {
+  color: var(--accent-gold-light);
+}
+
+.meta-row, .genres-list, .card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+.rating-chip {
+  color: var(--accent-gold);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.genre-pill {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  color: #cbd5e1;
+}
+
+.card-overview {
+  margin: 0;
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.trailer-notice {
+  font-size: 12px;
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.card-actions {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.trailer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trailer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trailer-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.close-trailer-btn {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 680px) {
+  .filters-panel {
+    grid-template-columns: 1fr;
+  }
+  .card-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .card-poster {
+    width: 130px;
+  }
+  .meta-row, .genres-list, .card-actions {
+    justify-content: center;
+  }
+}

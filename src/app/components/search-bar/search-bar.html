@@ -1,0 +1,20 @@
+<div class="search-container">
+  <div class="search-box">
+    <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+    <input
+      type="text"
+      placeholder="Search for movies by title..."
+      #movieTitle
+      (input)="searchMovieByTitle(movieTitle.value)"
+    />
+    <button
+      type="button"
+      class="clear-btn"
+      *ngIf="currentValue().length > 0"
+      (click)="clearSearch(movieTitle)"
+      title="Clear search"
+    >
+      <fa-icon [icon]="faClear"></fa-icon>
+    </button>
+  </div>
+</div>

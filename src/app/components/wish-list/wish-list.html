@@ -1,0 +1,74 @@
+<div class="wishlist-container">
+  <div class="wishlist-header">
+    <div class="header-left">
+      <a routerLink="/" class="back-link">
+        <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Movies
+      </a>
+      <h2>My Wish List ({{ movieService.wishList().length }})</h2>
+    </div>
+
+    <div class="sort-wrapper" *ngIf="movieService.wishList().length > 1">
+      <label for="wishSort" class="sort-label">
+        <fa-icon [icon]="faSort" class="sort-icon"></fa-icon>
+        <span class="sort-text">Sort by:</span>
+      </label>
+      <select
+        id="wishSort"
+        class="sort-select"
+        [value]="sortBy()"
+        (change)="onSortChange($event)"
+      >
+        <option value="default">Default</option>
+        <option value="vote_desc">Rating: High to Low</option>
+        <option value="vote_asc">Rating: Low to High</option>
+        <option value="date_desc">Release: Newest first</option>
+        <option value="date_asc">Release: Oldest first</option>
+        <option value="title_asc">Title: A to Z</option>
+        <option value="title_desc">Title: Z to A</option>
+      </select>
+    </div>
+  </div>
+
+  @if (sortedWishList().length > 0) {
+    <div class="movie-grid">
+      @for (movie of sortedWishList(); track movie.id) {
+        <div class="movie-card-wrapper">
+          <a class="movie-card" [routerLink]="['/movie', movie.id]">
+            <div class="poster-container">
+              <img
+                [src]="movie.poster_path ? movieService.imageUrl + movie.poster_path : 'https://placehold.co/500x750/1e293b/94a3b8?text=No+Poster'"
+                [alt]="movie.title"
+                loading="lazy"
+              />
+              <span class="rating-badge" *ngIf="movie.vote_average">
+                ★ {{ movie.vote_average | number:'1.1-1' }}
+              </span>
+            </div>
+            <div class="movie-info">
+              <div class="movie-title">{{ movie.title }}</div>
+              <div class="movie-date">{{ movie.release_date | date:'yyyy' }}</div>
+            </div>
+          </a>
+          <button
+            class="remove-btn"
+            (click)="removeMovie(movie, $event)"
+            title="Remove from wish list"
+          >
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-icon-box">
+        <fa-icon [icon]="faHeart" class="empty-icon"></fa-icon>
+      </div>
+      <h3>Your wish list is empty</h3>
+      <p>Save movies you want to watch by clicking the heart icon on any movie.</p>
+      <a routerLink="/" class="browse-btn">
+        <fa-icon [icon]="faFilm"></fa-icon> Explore Now Playing Movies
+      </a>
+    </div>
+  }
+</div>

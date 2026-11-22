@@ -1,0 +1,103 @@
+:host {
+  display: block;
+}
+
+.list-controls-bar {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 24px 20px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.3px;
+}
+
+.movie-count {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+}
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Surprise Me Button */
+.surprise-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d97706 100%);
+  color: #0b0f19;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: var(--radius-full);
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--accent-gold-glow);
+  transition: var(--transition);
+  animation: subtlePulse 3s infinite;
+}
+
+@keyframes subtlePulse {
+  0%, 100% { box-shadow: 0 4px 14px var(--accent-gold-glow); }
+  50% { box-shadow: 0 4px 22px rgba(245, 158, 11, 0.5); }
+}
+
+.surprise-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 22px rgba(245, 158, 11, 0.55);
+}
+
+.dice-btn-icon {
+  font-size: 15px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.surprise-btn:hover .dice-btn-icon {
+  transform: rotate(180deg) scale(1.15);
+}
+
+@media (max-width: 768px) {
+  .list-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 16px 12px 6px;
+  }
+  .controls-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .surprise-btn {
+    justify-content: center;
+  }
+  .sort-wrapper {
+    justify-content: space-between;
+  }
+}

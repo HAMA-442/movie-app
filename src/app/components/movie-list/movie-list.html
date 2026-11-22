@@ -1,0 +1,67 @@
+<div class="list-controls-bar">
+  <div class="section-heading">
+    <h2>{{ searchTitle() ? 'Search Results' : 'Now Playing Movies' }}</h2>
+    <span class="movie-count" *ngIf="searchTitle() === ''">
+      {{ sortedMovies().length }} movies
+    </span>
+  </div>
+
+  <div class="controls-right">
+    <!-- Surprise Me Button -->
+    <button type="button" class="surprise-btn" (click)="openSurpriseMe()" title="Get a random movie recommendation">
+      <fa-icon [icon]="faDice" class="dice-btn-icon"></fa-icon>
+      <span>Surprise Me!</span>
+    </button>
+
+    <app-search-bar (titleSearched)="onSearch($event)"></app-search-bar>
+
+    <div class="sort-wrapper">
+      <label for="movieSort" class="sort-label">
+        <fa-icon [icon]="faSort" class="sort-icon"></fa-icon>
+        <span class="sort-text">Sort by:</span>
+      </label>
+      <select
+        id="movieSort"
+        class="sort-select"
+        [value]="sortBy()"
+        (change)="onSortChange($event)"
+      >
+        <option value="default">Default</option>
+        <option value="vote_desc">Rating: High to Low</option>
+        <option value="vote_asc">Rating: Low to High</option>
+        <option value="date_desc">Release: Newest first</option>
+        <option value="date_asc">Release: Oldest first</option>
+        <option value="title_asc">Title: A to Z</option>
+        <option value="title_desc">Title: Z to A</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="searchTitle() === ''; else searchTpl" class="movie-grid">
+  @for (movie of sortedMovies(); track movie.id) {
+    <a class="movie-card" [routerLink]="['/movie', movie.id]">
+      <div class="poster-container">
+        <img
+          [src]="movie.poster_path ? movieService.imageUrl + movie.poster_path : 'https://placehold.co/500x750/1e293b/94a3b8?text=No+Poster'"
+          [alt]="movie.title"
+          loading="lazy"
+        />
+        <span class="rating-badge" *ngIf="movie.vote_average">
+          ★ {{ movie.vote_average | number:'1.1-1' }}
+        </span>
+      </div>
+      <div class="movie-info">
+        <div class="movie-title">{{ movie.title }}</div>
+        <div class="movie-date">{{ movie.release_date | date:'yyyy' }}</div>
+      </div>
+    </a>
+  }
+</div>
+
+<ng-template #searchTpl>
+  <app-movie-search [title]="searchTitle()" [sortBy]="sortBy()"></app-movie-search>
+</ng-template>
+
+<!-- Surprise Me Modal Dialog -->
+<app-surprise-me [(isOpen)]="isSurpriseOpen"></app-surprise-me>

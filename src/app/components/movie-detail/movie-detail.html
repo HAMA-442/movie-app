@@ -1,0 +1,87 @@
+@if (movie(); as m) {
+  <div class="detail-wrapper">
+    <div
+      class="backdrop-bg"
+      *ngIf="m.backdrop_path"
+      [style.backgroundImage]="'url(' + movieService.imageUrl + m.backdrop_path + ')'"
+    ></div>
+    <div class="backdrop-overlay"></div>
+
+    <div class="detail-container">
+      <a routerLink="/" class="back-link">
+        <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Movies
+      </a>
+
+      <div class="detail">
+        <div class="poster-column">
+          <div class="poster">
+            <img
+              [src]="m.poster_path ? movieService.imageUrl + m.poster_path : 'https://placehold.co/500x750/1e293b/94a3b8?text=No+Poster'"
+              [alt]="m.title"
+            />
+            <button
+              class="heart-btn"
+              [class.wished]="isWished(m)"
+              (click)="toggleWish(m)"
+              [title]="isWished(m) ? 'Remove from Wish list' : 'Add to Wish list'"
+            >
+              <fa-icon [icon]="faHeart"></fa-icon>
+            </button>
+          </div>
+
+          <button
+            class="wish-cta-btn"
+            [class.wished]="isWished(m)"
+            (click)="toggleWish(m)"
+          >
+            <fa-icon [icon]="faHeart"></fa-icon>
+            {{ isWished(m) ? 'Saved in Wish list' : 'Add to Wish list' }}
+          </button>
+        </div>
+
+        <div class="info">
+          <div class="title-section">
+            <h2>{{ m.title }}</h2>
+            <div class="rating-pill" *ngIf="m.vote_average">
+              <fa-icon [icon]="faStar" class="star-icon"></fa-icon>
+              <span>{{ m.vote_average | number:'1.1-1' }}</span>
+              <span class="vote-count">({{ m.vote_count }} votes)</span>
+            </div>
+          </div>
+
+          <table class="detail-table">
+            <tr>
+              <th>Original title</th>
+              <td>{{ m.original_title }}</td>
+            </tr>
+            <tr>
+              <th>Original language</th>
+              <td><span class="lang-tag">{{ m.original_language | uppercase }}</span></td>
+            </tr>
+            <tr>
+              <th>Release date</th>
+              <td>{{ m.release_date | date: 'mediumDate' }}</td>
+            </tr>
+            <tr>
+              <th>Popularity</th>
+              <td>{{ m.popularity | number:'1.1-2' }}</td>
+            </tr>
+            <tr>
+              <th>Vote average</th>
+              <td>{{ m.vote_average }} / 10</td>
+            </tr>
+            <tr>
+              <th>Vote count</th>
+              <td>{{ m.vote_count }}</td>
+            </tr>
+          </table>
+
+          <div class="overview-section">
+            <h4>Overview</h4>
+            <p>{{ m.overview || 'No synopsis available for this movie.' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

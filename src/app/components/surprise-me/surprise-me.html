@@ -1,0 +1,211 @@
+@if (isOpen()) {
+  <div class="surprise-overlay" (click)="closeModal()">
+    <div class="surprise-modal" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-title">
+          <div class="dice-badge">
+            <fa-icon [icon]="faDice" class="dice-icon"></fa-icon>
+          </div>
+          <div>
+            <h3>Surprise Me!</h3>
+            <span class="modal-subtitle">Don't know what to watch? Let fate decide.</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button
+            type="button"
+            class="filter-toggle-btn"
+            [class.active]="filtersOpen()"
+            (click)="toggleFilters()"
+            title="Custom Filters"
+          >
+            <fa-icon [icon]="faSliders"></fa-icon>
+            <span>Filters</span>
+          </button>
+
+          <button type="button" class="close-btn" (click)="closeModal()" title="Close">
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Optional Filters Panel -->
+      @if (filtersOpen()) {
+        <div class="filters-panel">
+          <div class="filter-group">
+            <label for="filterGenre">Genre</label>
+            <select id="filterGenre" (change)="onGenreChange($event)" [value]="selectedGenre() ?? ''">
+              <option value="">All Genres</option>
+              @for (g of genres(); track g.id) {
+                <option [value]="g.id">{{ g.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterRating">Min. Rating</label>
+            <select id="filterRating" (change)="onRatingChange($event)" [value]="selectedRating() ?? ''">
+              <option value="">Any Rating</option>
+              <option value="6">★ 6.0 +</option>
+              <option value="7">★ 7.0 + (Good)</option>
+              <option value="7.5">★ 7.5 + (Very Good)</option>
+              <option value="8">★ 8.0 + (Masterpiece)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterEra">Release Era</label>
+            <select id="filterEra" (change)="onEraChange($event)" [value]="selectedEra()">
+              <option value="all">All Time</option>
+              <option value="2020s">Recent (2020 - 2026)</option>
+              <option value="2010s">2010s (2010 - 2019)</option>
+              <option value="2000s">2000s (2000 - 2009)</option>
+              <option value="1990s">1990s (1990 - 1999)</option>
+              <option value="classic">Classic (Before 1990)</option>
+            </select>
+          </div>
+        </div>
+      }
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Loading State -->
+        @if (isLoading()) {
+          <div class="loading-state">
+            <div class="rolling-dice-box">
+              <fa-icon [icon]="faDice" class="rolling-dice"></fa-icon>
+            </div>
+            <h4>Rolling the Cinematic Dice...</h4>
+            <p>Searching the universe for your next favorite film.</p>
+          </div>
+        } @else if (errorMessage()) {
+          <!-- Error State -->
+          <div class="error-state">
+            <p class="error-text">{{ errorMessage() }}</p>
+            <button class="action-btn btn-retry" (click)="rollMovie()">
+              <fa-icon [icon]="faRotateRight"></fa-icon> Try Again
+            </button>
+          </div>
+        } @else if (movie(); as m) {
+          <!-- Trailer Player View -->
+          @if (showTrailer() && trailerUrl()) {
+            <div class="trailer-container">
+              <div class="trailer-header">
+                <span class="trailer-title">Trailer: {{ m.title }}</span>
+                <button class="close-trailer-btn" (click)="closeTrailer()">
+                  <fa-icon [icon]="faTimes"></fa-icon> Close Trailer
+                </button>
+              </div>
+              <div class="iframe-wrapper">
+                <iframe
+                  [src]="trailerUrl()"
+                  title="Movie Trailer"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          }
+
+          <!-- Movie Recommendation Card -->
+          <div class="recommendation-card" [class.hidden]="showTrailer()">
+            <!-- Backdrop layer -->
+            @if (m.backdrop_path) {
+              <div
+                class="card-backdrop"
+                [style.backgroundImage]="'url(https://image.tmdb.org/t/p/w780' + m.backdrop_path + ')'"
+              ></div>
+            }
+            <div class="backdrop-gradient"></div>
+
+            <div class="card-content">
+              <!-- Poster Column -->
+              <div class="card-poster">
+                <img
+                  [src]="m.poster_path ? 'https://image.tmdb.org/t/p/w500' + m.poster_path : 'https://placehold.co/500x750/1e293b/94a3b8?text=No+Poster'"
+                  [alt]="m.title"
+                />
+                @if (m.vote_average) {
+                  <span class="card-rating">
+                    <fa-icon [icon]="faStar" class="star-icon"></fa-icon>
+                    {{ m.vote_average | number:'1.1-1' }}
+                  </span>
+                }
+              </div>
+
+              <!-- Info Column -->
+              <div class="card-info">
+                <a [routerLink]="['/movie', m.id]" (click)="closeModal()" class="movie-link" title="View Full Details">
+                  <h2 class="card-title">{{ m.title }}</h2>
+                </a>
+
+                <!-- Meta row: Year, Duration, Rating -->
+                <div class="meta-row">
+                  <span class="meta-chip">
+                    <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                    {{ getReleaseYear(m.release_date) }}
+                  </span>
+                  <span class="meta-chip">
+                    <fa-icon [icon]="faClock"></fa-icon>
+                    {{ formatRuntime(m.runtime) }}
+                  </span>
+                  <span class="meta-chip rating-chip">
+                    <fa-icon [icon]="faStar"></fa-icon>
+                    {{ m.vote_average | number:'1.1-1' }} / 10
+                  </span>
+                </div>
+
+                <!-- Genres -->
+                @if (m.genres && m.genres.length > 0) {
+                  <div class="genres-list">
+                    @for (genre of m.genres; track genre.id) {
+                      <span class="genre-pill">{{ genre.name }}</span>
+                    }
+                  </div>
+                }
+
+                <!-- Overview -->
+                <p class="card-overview">
+                  {{ m.overview || 'No description available for this recommendation.' }}
+                </p>
+
+                <!-- Trailer Error if clicked -->
+                @if (trailerError()) {
+                  <div class="trailer-notice">
+                    {{ trailerError() }}
+                  </div>
+                }
+
+                <!-- Interactive Action Buttons -->
+                <div class="card-actions">
+                  <button type="button" class="action-btn btn-trailer" (click)="watchTrailer()">
+                    <fa-icon [icon]="faPlay"></fa-icon>
+                    <span>Watch Trailer</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="action-btn btn-favorite"
+                    [class.favorited]="isWished()"
+                    (click)="toggleWish()"
+                  >
+                    <fa-icon [icon]="faHeart"></fa-icon>
+                    <span>{{ isWished() ? 'In Wishlist' : 'Add to Wishlist' }}</span>
+                  </button>
+
+                  <button type="button" class="action-btn btn-retry" (click)="rollMovie()">
+                    <fa-icon [icon]="faRotateRight"></fa-icon>
+                    <span>Try Again</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

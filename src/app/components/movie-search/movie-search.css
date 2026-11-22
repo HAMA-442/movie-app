@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.empty-state {
+  min-height: 250px;
+}
